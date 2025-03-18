@@ -10,7 +10,7 @@ import Tiramisu from '../../utils/images/Tiramisu.jpeg';
 import FondantChocolat from '../../utils/images/FondantChocolat.jpg';
 import Soda from '../../utils/images/Soda.jpeg'; 
 import JusOrange from '../../utils/images/JusOrange.jpg'; 
-import avocado from '../../utils/images/avocado.jpg';  // Correct import
+import avocado from '../../utils/images/avocado.jpg'; 
 
 const ProductList = ({ products, onAddToCart }) => {
   // Associe chaque produit à une image
@@ -26,7 +26,7 @@ const ProductList = ({ products, onAddToCart }) => {
     "Fondant au Chocolat": FondantChocolat,
     "Soda": Soda, 
     "Jus d'Orange": JusOrange,
-    "Avocado Juice": avocado,  // Correct entry for avocado juice
+    "Avocado Juice": avocado, 
   };
 
   return (
