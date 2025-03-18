@@ -107,8 +107,8 @@ function App() {
                 Livraison
               </span>
             </Link>
-            <Link to="/contact" className="bg-[#E4C268] text-white px-4 py-2 rounded-lg">
-              Réserver
+            <Link to="/contact" className="bg-[#E4C268] text-white px-4 py-2 rounded-lg">  
+            Reserve your table
             </Link>
           </div>
         </div>
