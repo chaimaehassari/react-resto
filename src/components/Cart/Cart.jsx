@@ -1,4 +1,20 @@
-const Cart = ({ cartItems, cartTotal, onRemoveItem, onConfirmOrder }) => {
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeItem, clearCart } from '../../store/slices/cartSlice';
+
+const Cart = ({ onConfirmOrder }) => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartTotal = useSelector((state) => state.cart.total);
+
+  const handleRemoveItem = (itemId) => {
+    dispatch(removeItem(itemId));
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
   return (
     <div className="bg-white p-6 shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4 text-[#E4C268]">Your Cart</h2>
@@ -16,7 +32,7 @@ const Cart = ({ cartItems, cartTotal, onRemoveItem, onConfirmOrder }) => {
                   ${(item.price * item.quantity).toFixed(2)}
                 </span>
                 <button
-                  onClick={() => onRemoveItem(item.id)}
+                  onClick={() => handleRemoveItem(item.id)}
                   className="text-red-500 hover:text-red-700 transition-colors"
                 >
                   <svg
@@ -46,7 +62,7 @@ const Cart = ({ cartItems, cartTotal, onRemoveItem, onConfirmOrder }) => {
           onClick={onConfirmOrder}
           className="bg-[#E4C268] text-white px-6 py-2 rounded-lg mt-4 w-full hover:bg-[#d2ae5d] transition-colors"
         >
-        Confirm order
+          Confirm order
         </button>
       </div>
     </div>

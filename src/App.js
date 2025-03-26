@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { clearCart } from './store/slices/cartSlice';
 import Home from './pages/Home/Home';
 import Menu from './pages/Menu/Menu'; 
 import About from './pages/About/About';
@@ -14,49 +16,20 @@ import livreson from './data/livreson';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
   const [showCartModal, setShowCartModal] = useState(false);
-
-
-  const handleAddToCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
-  };
-
-  const handleRemoveItem = (itemId) => {
-    const updatedCartItems = cartItems
-      .map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity - 1 } : item
-      )
-      .filter((item) => item.quantity > 0);
-    setCartItems(updatedCartItems);
-  };
+  const dispatch = useDispatch();
 
   const handleConfirmOrder = () => setShowCartModal(true);
 
-
   const handleNewOrder = () => {
-    setCartItems([]);
+    dispatch(clearCart());
     setShowCartModal(false);
   };
 
-  
-  const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
   return (
     <div className="min-h-screen flex flex-col">
-      
       <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-50">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          
           <Link to="/" className="flex items-center">
             <FontAwesomeIcon
               icon={faUtensils}
@@ -64,11 +37,10 @@ function App() {
               className="text-[#E4C268] hover:text-[#d2ae5d] transition-colors"
             />
             <span className="ml-3 font-bold text-[#E4C268] text-2xl md:text-3xl">
-            Golden<br /> Table
+              Golden<br /> Table
             </span>
           </Link>
 
-          
           <div className="lg:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -90,7 +62,6 @@ function App() {
             </button>
           </div>
 
-     
           <div className="hidden lg:flex items-center gap-8">
             <Link to="/" className="nav-link">
               <span className="text-gray-800 hover:text-[#E4C268] transition-colors">
@@ -108,12 +79,11 @@ function App() {
               </span>
             </Link>
             <Link to="/contact" className="bg-[#E4C268] text-white px-4 py-2 rounded-lg">  
-            Reserve your table
+              Reserve your table
             </Link>
           </div>
         </div>
 
-        
         {menuOpen && (
           <div className="lg:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-2">
@@ -144,10 +114,6 @@ function App() {
             path="/livraison"
             element={
               <Livraison
-                cartItems={cartItems}
-                cartTotal={cartTotal}
-                onAddToCart={handleAddToCart}
-                onRemoveItem={handleRemoveItem}
                 onConfirmOrder={handleConfirmOrder}
                 onNewOrder={handleNewOrder}
                 showCartModal={showCartModal}
@@ -160,7 +126,6 @@ function App() {
 
       {showCartModal && (
         <ConfirmationModal
-          cartItems={cartItems}
           onClose={() => setShowCartModal(false)}
           onNewOrder={handleNewOrder}
         />
