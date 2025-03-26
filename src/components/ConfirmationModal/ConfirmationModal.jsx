@@ -1,6 +1,9 @@
-export default function ConfirmationModal({ cartItems, onClose, onNewOrder }) {
- 
-  const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+export default function ConfirmationModal({ onClose, onNewOrder }) {
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartTotal = useSelector((state) => state.cart.total);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -14,23 +17,19 @@ export default function ConfirmationModal({ cartItems, onClose, onNewOrder }) {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg">
-       
           {cartItems.map((item, index) => (
             <div key={index} className="flex justify-between py-2">
-              <span>{item.name}</span>
-              <span>€{item.price.toFixed(2)}</span>
+              <span>{item.quantity}x {item.name}</span>
+              <span>€{(item.price * item.quantity).toFixed(2)}</span>
             </div>
           ))}
 
-          
-          
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <span className="text-xl font-bold text-gray-800">Total :</span>
             <span className="text-xl font-bold text-gray-800">€{cartTotal.toFixed(2)}</span>
           </div>
         </div>
 
-      
         <button
           onClick={() => {
             onNewOrder();
